@@ -6,8 +6,8 @@ const studentSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  regno: {
-    type: Number,
+  gender: {
+    type: String,
     required: true,
   },
   email: {
@@ -22,8 +22,30 @@ const studentSchema = mongoose.Schema({
       },
     },
   },
-  description: {
+  mobile: [
+    {
+      type: String,
+    },
+  ],
+  institution: {
     type: String,
+    required: true,
+  },
+  qualification: {
+    type: String,
+    required: true,
+  },
+  batch: {
+    type: Number,
+    required: true,
+  },
+  branch: {
+    type: String,
+    required: true,
+  },
+  regno: {
+    type: String,
+    required: true,
   },
 });
 

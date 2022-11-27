@@ -6,6 +6,13 @@ const alumniSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  pic: {
+    type: String,
+  },
+  gender: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
@@ -18,15 +25,28 @@ const alumniSchema = mongoose.Schema({
       },
     },
   },
-  currentStatus: {
+  mobile: [
+    {
+      type: String,
+    },
+  ],
+  institution: {
     type: String,
     required: true,
   },
-  referrals: {
-    type: String,
-    required: false,
+  batch: {
+    type: Number,
+    required: true,
   },
-  description: {
+  branch: {
+    type: String,
+    required: true,
+  },
+  currentPosition: {
+    type: String,
+    required: true,
+  },
+  location: {
     type: String,
     required: true,
   },

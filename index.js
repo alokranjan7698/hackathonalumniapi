@@ -13,6 +13,8 @@ app.use(json());
 app.use("/student", studentRouter);
 app.use("/alumni", alumniRouter);
 
+// console.log(JSON.stringify(568));
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });

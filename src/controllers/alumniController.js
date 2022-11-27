@@ -1,17 +1,43 @@
 const Alumni = require("../models/alumni");
 
 const addAlumni = async (req, res) => {
-  const { name, email, currentStatus, referrals, description } = req.body;
-  if (!name || !email || !currentStatus || !referrals || !description) {
+  const {
+    name,
+    pic,
+    gender,
+    email,
+    mobile,
+    institution,
+    batch,
+    branch,
+    currentPosition,
+    location,
+  } = req.body;
+  if (
+    !name ||
+    !gender ||
+    !email ||
+    !mobile ||
+    !institution ||
+    !batch ||
+    !branch ||
+    !currentPosition ||
+    !location
+  ) {
     res.status(400).json("Please enter all details");
   }
   try {
     const newAlumni = await Alumni.create({
       name,
+      pic,
+      gender,
       email,
-      currentStatus,
-      referrals,
-      description,
+      mobile,
+      institution,
+      batch,
+      branch,
+      currentPosition,
+      location,
     });
     res.status(200).json(newAlumni);
   } catch (err) {
@@ -33,12 +59,34 @@ const deleteAlumni = async (req, res) => {
 };
 const editAlumni = async (req, res) => {
   const { id } = req.params;
-  const { name, email, currentStatus, referrals, description } = req.body;
+  const {
+    name,
+    pic,
+    gender,
+    email,
+    mobile,
+    institution,
+    batch,
+    branch,
+    currentPosition,
+    location,
+  } = req.body;
   if (id) {
     try {
       const updatedAlumni = await Alumni.findByIdAndUpdate(
         { _id: id },
-        { name, email, currentStatus, referrals, description },
+        {
+          name,
+          pic,
+          gender,
+          email,
+          mobile,
+          institution,
+          batch,
+          branch,
+          currentPosition,
+          location,
+        },
         { new: true }
       );
       res.status(200).json(updatedAlumni);
@@ -57,5 +105,27 @@ const readAlumni = async (req, res) => {
     res.status(400).json("Error in fetching student\n" + err.message);
   }
 };
+const searchAlumni = async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+  try {
+    const alumni = await Alumni.find(keyword);
+    res.status(200).json(alumni);
+  } catch (err) {
+    res.status(400).json("Error in searching alumni\n" + err.message);
+  }
+};
 
-module.exports = { addAlumni, deleteAlumni, editAlumni, readAlumni };
+module.exports = {
+  addAlumni,
+  deleteAlumni,
+  editAlumni,
+  readAlumni,
+  searchAlumni,
+};

@@ -1,16 +1,41 @@
 const Student = require("../models/student");
 
 const addStudent = async (req, res) => {
-  const { name, regno, email, description } = req.body;
-  if (!name || !regno || !email || !description) {
+  const {
+    name,
+    gender,
+    email,
+    mobile,
+    institution,
+    qualification,
+    batch,
+    branch,
+    regno,
+  } = req.body;
+  if (
+    !name ||
+    !gender ||
+    !email ||
+    !mobile ||
+    !institution ||
+    !qualification ||
+    !batch ||
+    !branch ||
+    !regno
+  ) {
     res.status(400).json("Please enter all details");
   }
   try {
     const newStudent = await Student.create({
       name,
-      regno,
+      gender,
       email,
-      description,
+      mobile,
+      institution,
+      qualification,
+      batch,
+      branch,
+      regno,
     });
     res.status(200).json(newStudent);
   } catch (err) {
@@ -32,12 +57,32 @@ const deleteStudent = async (req, res) => {
 };
 const editStudent = async (req, res) => {
   const { id } = req.params;
-  const { name, regno, email, description } = req.body;
+  const {
+    name,
+    gender,
+    email,
+    mobile,
+    institution,
+    qualification,
+    batch,
+    branch,
+    regno,
+  } = req.body;
   if (id) {
     try {
       const updatedStudent = await Student.findByIdAndUpdate(
         { _id: id },
-        { name, regno, email, description },
+        {
+          name,
+          gender,
+          email,
+          mobile,
+          institution,
+          qualification,
+          batch,
+          branch,
+          regno,
+        },
         { new: true }
       );
       res.status(200).json(updatedStudent);
@@ -50,11 +95,33 @@ const editStudent = async (req, res) => {
 };
 const readStudent = async (req, res) => {
   try {
-    const students = await Student.find({}, { __v: 0 });
+    const students = await Student.find({});
     res.status(200).json(students);
   } catch (err) {
     res.status(400).json("Error in fetching student\n" + err.message);
   }
 };
+const searchStudent = async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+  try {
+    const students = await Student.find(keyword);
+    res.status(200).json(students);
+  } catch (err) {
+    res.status(400).json("Error in searching alumni\n" + err.message);
+  }
+};
 
-module.exports = { addStudent, deleteStudent, editStudent, readStudent };
+module.exports = {
+  addStudent,
+  deleteStudent,
+  editStudent,
+  readStudent,
+  searchStudent,
+};
