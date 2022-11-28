@@ -24,7 +24,7 @@ const studentSchema = mongoose.Schema({
   },
   mobile: [
     {
-      type: String,
+      type:Number,
     },
   ],
   institution: {
@@ -44,8 +44,9 @@ const studentSchema = mongoose.Schema({
     required: true,
   },
   regno: {
-    type: String,
+    type:Number,
     required: true,
+    unique: true,
   },
 });
 
